@@ -110,26 +110,32 @@ class OrderController extends Controller
             // For COD: Link cart items and clear session immediately
             // For PayPal: Don't link cart items yet - wait for payment confirmation
             if ($validated['payment_method'] == 'cod') {
-                // Update cart items with order_id for COD
-                Cart::where('user_id', auth()->user()->id)
-                    ->where('order_id', null)
-                    ->update(['order_id' => $order->id]);
-                
-                // Clear session data for COD
+            
+                foreach ($cartItems as $cart) {
+            
+                    if ($cart->product) {
+                        $cart->product_title = $cart->product->title;
+                    }
+            
+                    $cart->order_id = $order->id;
+                    $cart->save();
+                }
+            
                 session()->forget('cart');
                 session()->forget('coupon');
-                
-                // Send notification to admin
+            
                 $admin = User::where('role', 'admin')->first();
+            
                 if ($admin) {
                     $details = [
                         'title' => 'New order created',
                         'actionURL' => route('order.show', $order->id),
                         'fas' => 'fa-file-alt'
                     ];
+            
                     Notification::send($admin, new StatusNotification($details));
                 }
-                
+            
                 return redirect()->route('home')
                     ->with('success', 'Your product successfully placed in order');
             }
