@@ -180,3 +180,108 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 🔹 This project is **MIT Licensed** – Feel free to use & modify!
 
 ⭐ **If you find this project helpful, don't forget to star it!** ⭐
+
+---
+
+# Take-Home Test Implementation
+
+This section describes the changes implemented to complete the take-home test tasks.
+
+## Task 1 – Add Order Product List on Order Detail Page
+
+The order detail page:
+
+```
+/user/order/show/{order_id}
+```
+
+was updated to display the list of purchased products.
+
+Each order loads its cart items using the `cart_info` relationship:
+
+```
+Order::with(['cart_info.product','user','shipping'])->findOrFail($id);
+```
+
+The order detail view now renders a table containing:
+
+* Product name
+* Price
+* Quantity
+* Amount
+
+This allows users to see the exact products included in the order.
+
+---
+
+## Task 2 – Prevent Order Changes When Product Is Updated or Deleted
+
+To ensure historical order data remains unchanged when a product is edited or deleted, a **snapshot of the product title** is stored during checkout.
+
+The `carts` table already includes the column:
+
+```
+product_title
+```
+
+During checkout, the product title is saved:
+
+```
+$cart->product_title = $cart->product->title;
+```
+
+The order detail page now displays the stored `product_title` instead of retrieving it dynamically from the `products` table.
+
+This ensures that:
+
+* Updating a product name does not affect existing orders
+* Deleting a product does not break the order detail page
+
+---
+
+# Suggestions / Improvements
+
+1. **Use Order Items Table**
+
+Instead of using the `carts` table for completed orders, it would be better to create a dedicated `order_items` table.
+
+2. **Use Database Transactions**
+
+The checkout process should use database transactions to prevent inconsistent data if an error occurs.
+
+3. **Store Full Product Snapshot**
+
+Additional product information should be stored when checkout occurs:
+
+* product_name
+* product_price
+* product_image
+
+This ensures order history remains accurate even if product data changes.
+
+4. **Controller Refactoring**
+
+Some controllers contain a large amount of logic and could be refactored into service classes.
+
+---
+
+# Proof
+
+### Before Product Update
+
+Order detail page showing the purchased product.
+
+### After Product Update
+
+The admin updates the product name in the product management page.
+However, the order detail page still shows the original product name stored during checkout.
+
+Screenshots:
+
+| Before Product Update    | After Product Update     |
+| ------------------------ | ------------------------ |
+| (screenshot/sebelum_perubahan_code.png) | (screenshot/setelah_menambahkan_detail_produk.png) |
+| (screenshot/sebelum_admin_mengupdate_produk_atau_menghapus_produk.png) | (screenshot/setelah_admin_update_produk_atau_delete_produk.png) |
+| (screenshot/sebelum_admin_update_produk.png) | (screenshot/setelah_admin_delete_produk.png) |
+
+---
