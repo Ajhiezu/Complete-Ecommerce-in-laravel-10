@@ -278,10 +278,10 @@ However, the order detail page still shows the original product name stored duri
 
 Screenshots:
 
-| Before Product Update    | After Product Update     |
-| ------------------------ | ------------------------ |
-| (screenshot/sebelum_perubahan_code.png) | (screenshot/setelah_menambahkan_detail_produk.png) |
-| (screenshot/sebelum_admin_mengupdate_produk_atau_menghapus_produk.png) | (screenshot/setelah_admin_update_produk_atau_delete_produk.png) |
-| (screenshot/sebelum_admin_update_produk.png) | (screenshot/setelah_admin_delete_produk.png) |
+| Before Product Update | After Product Update |
+|----------------------|----------------------|
+| ![before](screenshot/sebelum_perubahan_code.png) | ![after](screenshot/setelah_menambahkan_detail_produk.png) |
+| ![before](screenshot/sebelum_admin_mengupdate_produk_atau_menghapus_produk.png) | ![after](screenshot/setelah_admin_update_produk_atau_delete_produk.png) |
+| ![before](screenshot/sebelum_admin_update_produk.png) | ![after](screenshot/setelah_admin_delete_produk.png) |
 
 ---
