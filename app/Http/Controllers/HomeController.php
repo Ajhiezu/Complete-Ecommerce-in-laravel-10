@@ -84,8 +84,8 @@ class HomeController extends Controller
 
     public function orderShow($id)
     {
-        $order=Order::find($id);
-        // return $order;
+        $order = Order::with(['cart_info.product','shipping','user'])->findOrFail($id);
+    
         return view('user.order.show')->with('order',$order);
     }
     // Product Review
