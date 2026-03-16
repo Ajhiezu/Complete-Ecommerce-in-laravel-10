@@ -54,6 +54,43 @@
       </tbody>
     </table>
 
+    <h4 class="text-center pb-4 mt-4">ORDER PRODUCTS</h4>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if($order->cart_info->count() > 0)
+
+              @foreach($order->cart_info as $cart)
+
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$cart->product_title ?? 'Produk Removed'}}</td>
+                  <td>${{$cart->price}}</td>
+                  <td>{{$cart->quantity}}</td>
+                  <td>${{$cart->amount}}</td>
+                </tr>
+
+              @endforeach
+
+            @else
+
+              <tr>
+                <td colspan="5" class="text-center">No products found</td>
+              </tr>
+
+            @endif
+          </tbody>
+        </table>
+
     <section class="confirmation_part section_padding">
       <div class="order_boxes">
         <div class="row">
